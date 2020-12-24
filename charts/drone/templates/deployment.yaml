@@ -45,11 +45,6 @@ spec:
               port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-          env:
-            - name: HOST_IP
-              valueFrom:
-                fieldRef:
-                  fieldPath: status.hostIP
           envFrom:
             - configMapRef:
                 name: {{ include "drone.fullname" . }}
@@ -57,6 +52,13 @@ spec:
             - secretRef:
                 name: {{ . }}
           {{- end }}
+          env:
+            - name: HOST_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: DRONE_DATABASE_DATASOURCE
+              value: postgres://$(DB_USER):$(DB_PASS):$(HOST_IP):5432/drone?sslmode=disable
           volumeMounts:
             - name: storage-volume
               mountPath: {{ .Values.persistentVolume.mountPath }}
