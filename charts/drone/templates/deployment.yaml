@@ -58,7 +58,7 @@ spec:
                 fieldRef:
                   fieldPath: status.hostIP
             - name: DRONE_DATABASE_DATASOURCE
-              value: postgres://$(DB_USER):$(DB_PASS):$(HOST_IP):5432/drone?sslmode=disable
+              value: postgres://$(DB_USER):$(DB_PASS)@$(HOST_IP):5432/drone?sslmode=disable
           volumeMounts:
             - name: storage-volume
               mountPath: {{ .Values.persistentVolume.mountPath }}
